@@ -62,7 +62,7 @@ GRP_SEC(E) PVOID LoadPebModule(DWORD Hash) {
 	do {
 		
 		ModuleLdr = (PLDR_DATA_TABLE_ENTRY)NextEntry;
-		//ModuleLdr = (PVOID)NextEntry; 
+		 
 		
 		if (HashFunction(ModuleLdr->BaseDllName.Buffer, ModuleLdr->BaseDllName.Length) == Hash) {
 			
@@ -88,26 +88,26 @@ GRP_SEC(E) PVOID LoadExports(PVOID ZenImage, DWORD Hash) {
 	PWORD	OrdAddress		= NULL;
 
 	DosHeader	= (PIMAGE_DOS_HEADER)ZenImage; 
-	//DosHeader = (PVOID)ZenImage; 
+	
 
 	NtHeaders	= CONVERT(PIMAGE_NT_HEADERS, DosHeader, DosHeader->e_lfanew); 
-	//NtHeaders = (PVOID)((ULONG_PTR)DosHeader + DosHeader->e_lfanew); 
+	
 
 	DataDir		= &NtHeaders->OptionalHeader.DataDirectory[0]; 
 
 	if (DataDir->VirtualAddress) {
 
 		ExportDir	= CONVERT(PIMAGE_EXPORT_DIRECTORY, DosHeader, DataDir->VirtualAddress); 
-		//ExportDir = (PVOID)((ULONG_PTR)DosHeader + DataDir->VirtualAddress); 
+		
 
-		NameAddress = CONVERT(PDWORD, DosHeader, ExportDir->AddressOfNames);
-		//NameAddress = (PVOID)((ULONG_PTR)DosHeader + ExportDir->AddressOfNames);
+		NameAddress 	= CONVERT(PDWORD, DosHeader, ExportDir->AddressOfNames);
+	
 
-		FuncAddress = CONVERT(PDWORD, DosHeader, ExportDir->AddressOfFunctions); 
-		//FuncAddress = (PVOID)((ULONG_PTR)DosHeader + ExportDir->AddressOfFunctions);
+		FuncAddress 	= CONVERT(PDWORD, DosHeader, ExportDir->AddressOfFunctions); 
+		
 
 		OrdAddress	= CONVERT(PWORD, DosHeader, ExportDir->AddressOfNameOrdinals);  
-		//OrdAddress = (PVOID)((ULONG_PTR)DosHeader + ExportDir->AddressOfNameOrdinals);
+	
 
 		for (DWORD Index = 0; ExportDir->NumberOfNames != 0; Index++) {
 
@@ -162,10 +162,10 @@ GRP_SEC(E) PVOID LoadImports(PVOID ZenImage, PVOID ImportDir) {
 			if (NT_SUCCESS(Status)) {
 
 				OrgThunk	= CONVERT(PIMAGE_THUNK_DATA, ZenImage, ImportDesc->OriginalFirstThunk); 
-				//OrgThunk = (PVOID)((ULONG_PTR)ZenImage + ImportDesc->OriginalFirstThunk);
+				
 
 				FirstThunk	= CONVERT(PIMAGE_THUNK_DATA, ZenImage, ImportDesc->FirstThunk); 
-				//FirstThunk = (PVOID)((ULONG_PTR)ZenImage + ImportDesc->FirstThunk); 
+				
 
 
 				while (OrgThunk->u1.AddressOfData != 0) {
@@ -182,7 +182,7 @@ GRP_SEC(E) PVOID LoadImports(PVOID ZenImage, PVOID ImportDir) {
 					else {
 
 						ImportName = CONVERT(PIMAGE_IMPORT_BY_NAME, ZenImage, OrgThunk->u1.AddressOfData); 
-						//ImportName = (PVOID)((ULONG_PTR)ZenImage + OrgThunk->u1.AddressOfData);
+					
 
 						Resolve.Function.RtlInitAnsiString(&AniDllName, (PVOID)ImportName->Name);
 
