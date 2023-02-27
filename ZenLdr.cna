@@ -1,0 +1,13 @@
+set BEACON_RDLL_GENERATE {
+
+	$hnd = openf( script_resource( "ZenLdr.". $3 .".bin" ) );
+	$ldr = readb( $hnd, -1 );
+	closef( $hnd );
+
+	if ( strlen( $ldr ) == 0 ) {
+		warn( 'ZenLdr has not been compiled, using standard cobalt loader.' );
+		return $null;
+	};
+
+	return $ldr . $2;
+};
