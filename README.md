@@ -1,6 +1,8 @@
 # ZenLdr
 Basic implementation of Cobalt Strikes - User Defined Reflective Loader feature
 
+Blog Post - https://mav3rick33.gitbook.io/the-lab/cobalt-strike-user-defined-reflective-loader-studies
+
 # Credits
 
 Full credits go to the security researchers below, without their work this wouldn't be possible. 
